@@ -16,7 +16,6 @@
 *.csv
 *.jpg
 *.safetensors
-*.txt
 embeddings
 Retrieval_Server/checkpoints/
 Retrieval_Server/data/
