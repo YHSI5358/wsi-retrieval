@@ -82,7 +82,7 @@ class WSI_Hilbert_Curve_Encoder():
         return node_dict
 
     def split_iteration(self, leaf_node_dict, total_node_dict):
-        leaf_score = []  # leaf_score 是最小堆，保存叶子结点的分裂相似度
+        leaf_score = []  # leaf_score  
         for index in leaf_node_dict:
             heapq.heappush(leaf_score, (leaf_node_dict[index].sim_score, index))
 
@@ -97,7 +97,7 @@ class WSI_Hilbert_Curve_Encoder():
                 leaf_node_dict[leaf.node_index] = leaf
                 heapq.heappush(leaf_score, (leaf.sim_score, leaf.node_index))
 
-        parent_score = [] # leaf_score 是最大堆，保存叶子结点的父节点的分裂相似度
+        parent_score = [] # leaf_score  
         for index in leaf_node_dict:
             if leaf_node_dict[index].sim_score.parent_index is not None:
                 parent_item = (total_node_dict[leaf_node_dict[index].sim_score.parent_index].sim_score, leaf_node_dict[index].sim_score.parent_index)
@@ -106,29 +106,29 @@ class WSI_Hilbert_Curve_Encoder():
 
         while True:
             if not parent_score or not leaf_score:
-                break  # 如果没有父节点或叶子节点，退出
+                break  #  
 
-            # 比较叶子节点的最小分裂相似度和父节点的最大相似度
+            #  
             leaf_min_score, leaf_min_index = leaf_score[0]
             parent_max_score, parent_max_index = parent_score[0]
 
-            # 如果最小叶子节点分裂相似度小于父节点中的最大相似度，则分裂叶子节点
+            #  
             if leaf_min_score < parent_max_score:
                 node = node_dict[leaf_min_index]
                 node.split()
-                del node_dict[leaf_min_index]  # 删除叶子节点
+                del node_dict[leaf_min_index]  #  
 
-                # 更新叶子节点的堆
+                #  
                 for leaf in node.leafs:
                     node_dict[leaf.node_index] = leaf
                     heapq.heappush(leaf_score, (leaf.sim_score, leaf.node_index))
             else:
-                # 如果不存在更小的叶子节点分裂相似度，停止分裂
+                #  
                 break
         
 
     def load_wsi(self, wsi_name):
-        """按照 Name of WSI 来加载和保存 patch 图像。"""
+        """  Name of WSI   patch  """
         # if wsi_name in self.image_names:
         #     print(f"Patch of WSI {wsi_name} in the Cache.")
         #     return

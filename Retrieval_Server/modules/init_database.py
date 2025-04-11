@@ -38,7 +38,7 @@ class Initial_Database():
             # text_json
         )
         # local_not_exist = not os.path.exists("/home/mdi/suri/MDI_RAG_project/Retrieval_Server/caches/images")
-        # self.load_image_from_filecode()   # 从云服务端下载 WSI
+        # self.load_image_from_filecode()   #   WSI
         # self.image_nodes = self.create_image_node_from_sql(
         #     # image_json,
         #     local_not_exist=local_not_exist
@@ -62,7 +62,7 @@ class Initial_Database():
             sql_command = data_sql.split("\n")
             for command in sql_command:
                 if command != "":
-                    connection.execute(text(command.replace("0001-01-01", "1970-01-01")))       # 和数据库配置有关系（日期配置项）
+                    connection.execute(text(command.replace("0001-01-01", "1970-01-01")))       #  
             # connection.commit()        
 
     # def create_text_node_from_sql(self):
@@ -83,11 +83,11 @@ class Initial_Database():
     # def create_text_node_from_sql(self):
     #     nodes = []
     #     with self.engine.connect() as connection:
-    #         # 获取所有表的名称
+    #         #  
     #         tables = connection.execute(text("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")).fetchall()
     #         for table in tables:
     #             table_name = table[0]
-    #             # 对表的每一行，作为一个节点
+    #             #  
     #             contents = connection.execute(text(f"SELECT * FROM {table_name}")).fetchall()
     #             for row in contents:
     #                 row_dict = {}
@@ -101,7 +101,7 @@ class Initial_Database():
     def create_text_node_from_sql(self):
         nodes = []
         with self.engine.connect() as connection:
-            # 获取所有表的名称
+            #  
             tables = connection.execute(
                 text("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
             ).fetchall()
@@ -109,17 +109,17 @@ class Initial_Database():
             for table in tables:
                 table_name = table[0]
                 
-                # 获取当前表的所有列名
+                #  
                 columns = connection.execute(
                     text(f"SELECT column_name FROM information_schema.columns WHERE table_name='{table_name}' AND table_schema='public'")
                 ).fetchall()
                 column_names = [column[0] for column in columns]
 
-                # 对表的每一行，作为一个节点
+                #  
                 contents = connection.execute(text(f"SELECT * FROM {table_name}")).fetchall()
                 for row in contents:
-                    row_dict = dict(zip(column_names, row))  # 使用列名和值创建字典
-                    # 添加一个{table_name}字段，用于标识数据来源
+                    row_dict = dict(zip(column_names, row))  #  
+                    #  {table_name} 
                     row_dict["table_name"] = table_name
                     nodes.append(TextNode(id=uuid.uuid5(self.uuid_namespace, str(row_dict)),
                                           text=str(row_dict),
@@ -152,7 +152,7 @@ class Initial_Database():
         return nodes
 
     def load_image_from_filecode(self):
-        """从云服务拉取原始 WSI 图像。"""
+        """  WSI  """
         save_path = "/hpc2hdd/home/ysi538/retrieval/caches/wsi_image"
         os.makedirs(save_path, exist_ok=True)
         name = "file_source"
@@ -162,7 +162,7 @@ class Initial_Database():
             contents_name = connection.execute(text(f"SELECT file_name FROM {name}"))
             file_list = os.listdir(save_path)
             for id, code, name in tqdm(zip(contents_id, contents_code, contents_name)):
-                # 判断str(name[0])的结尾是不是svs或者tiff
+                #  str(name[0]) svs tiff
                 if str(name[0]).endswith(".svs") or str(name[0]).endswith(".tiff"):
                     if str(name[0]) not in file_list:
                         image_url = self.request_image_url(str(code[0]))
@@ -174,13 +174,13 @@ class Initial_Database():
                         if os.path.exists(old_path):
                             os.rename(old_path, new_path)
                         else:
-                            print(f"文件未找到: {old_path}")
+                            print(f" : {old_path}")
 
     def request_image_url(self, source_code):
         url = 'https://re_map.ibingli.com/diseaselib/api/v1/lib/common/getFileUrl'
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIiLCJleHAiOjIwMzQyMjI5MDMsImlhdCI6MTcxODg2MjkwMywiaXNzIjoiZGlzZWFzZWxpYkxvZ2luIiwibmJmIjoxNzE4ODYyOTAzLCJ1aWQiOjEwNX0.osomnuzu9Q5YNYrZsLwK6CC-FnTgepj0nd866a_-rjo'  # 注意替换成你的实际Bearer Token
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIiLCJleHAiOjIwMzQyMjI5MDMsImlhdCI6MTcxODg2MjkwMywiaXNzIjoiZGlzZWFzZWxpYkxvZ2luIiwibmJmIjoxNzE4ODYyOTAzLCJ1aWQiOjEwNX0.osomnuzu9Q5YNYrZsLwK6CC-FnTgepj0nd866a_-rjo'  #  Bearer Token
         }
         data = {
             "fileSourceCode": source_code

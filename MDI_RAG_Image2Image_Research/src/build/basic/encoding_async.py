@@ -90,7 +90,7 @@ class Embedding_loader():
 
 
     def loading_wsi_image(self, wsi_name, images):
-        """在 CPU 上获取 WSI patch 的 Dataloader。"""
+        """  CPU   WSI patch   Dataloader """
         wsi_dataset = CustomWSIDataset(images, self.wsi_patch_encoder.transform)
         dataloader = DataLoader(wsi_dataset, batch_size=16, shuffle=False, num_workers=16, pin_memory=True)
         return dataloader

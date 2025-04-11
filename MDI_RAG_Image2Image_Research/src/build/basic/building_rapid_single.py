@@ -65,7 +65,7 @@ class WSI_Image_Vector_DB_Builder:
             print(f"Reading cupy embeddings from {temp_dir}.")
             if os.path.exists(temp_dir):
                 embeddings = cp.load(os.path.join(temp_dir))
-                # 转换为numpy
+                #  numpy
                 embeddings = cp.asnumpy(embeddings).astype(np.float32)
             else:
                 print(f"Embeddings file not found for batch {batch_index}.")
@@ -202,7 +202,7 @@ class WSI_Image_Vector_DB_Builder:
             #     self.save_embeddings_to_file(batch_embeddings, batch_index)
             #     self.save_infos_to_file(batch_infos, batch_index)
 
-            # 释放显存
+            #  
             del cuda_index
             del embeddings
             cp.get_default_memory_pool().free_all_blocks()
@@ -211,13 +211,13 @@ class WSI_Image_Vector_DB_Builder:
 
     
     def save_infos_to_file(self, infos, batch_index):
-        """将 infos 保存到文件。"""
+        """  infos  """
         file_path = os.path.join(self.cuda_infos_dir, f"{method_type}_infos_batch_{batch_index}.json")
         with open(file_path, "w") as f:
             json.dump(infos, f)
     
     def save_embeddings_to_file(self, embeddings, batch_index):
-        """将 cuda 数组保存到文件。"""
+        """  cuda  """
         if method_type == "faiss":
             embeddings = embeddings.astype(np.float32)
             file_path = os.path.join(self.cuda_cache_dir, f"{method_type}_embeddings_batch_{batch_index}.npy")
@@ -227,7 +227,7 @@ class WSI_Image_Vector_DB_Builder:
             cp.save(file_path, embeddings)
 
     def save_index_to_file(self, index, batch_index):
-        """将 index 保存到文件。"""
+        """  index  """
         if method_type == "faiss":
             file_path = os.path.join(self.cuda_index_dir, f"{method_type}_index_batch_{batch_index}.bin")
             faiss.write_index(index, file_path)
@@ -262,7 +262,7 @@ class WSI_Image_Vector_DB_Builder:
         self.image_names = os.listdir(self.embed_cache_path)
         
     def update_cuda_index(self):
-        """ 对现有的 embeddings，如果没有索引，就建立索引。"""
+        """   embeddings """
         existing_index_files = sorted([f for f in os.listdir(self.cuda_index_dir) if f.startswith(f"{method_type}_index_batch_")])
         existing_index_files = [f.split("_")[-1].split(".")[0] for f in existing_index_files]
 
@@ -283,7 +283,7 @@ class WSI_Image_Vector_DB_Builder:
                 print(f"Index for batch {index_file} built.")
     
     def update_new_wsi(self, remain_force = False):
-        """更新 embeddings，处理新来的 WSI。"""
+        """  embeddings  WSI """
         self.update_image_names()
 
         existing_wsi_names = set()
@@ -323,13 +323,13 @@ class WSI_Image_Vector_DB_Builder:
             embeddings = cp.array(embeddings, dtype=cp.float32)
             
 
-            # 保存新的 embeddings
+            #   embeddings
             existing_batch_files = sorted([f for f in os.listdir(self.cuda_cache_dir) if f.startswith(f"{method_type}_embeddings_batch_")])
             new_batch_index = len(existing_batch_files)
             
 
             
-            # 更新 infos
+            #   infos
             batch_infos = []
             for wsi_name in batch_image_names:
                 patch_info_path = os.path.join(self.embed_cache_path, wsi_name, "patch_info_edited.json")
@@ -338,9 +338,9 @@ class WSI_Image_Vector_DB_Builder:
                     patch_info_path_origin = os.path.join(self.embed_cache_path, wsi_name, 'patch_info.json')
                     with open(patch_info_path_origin, 'r') as f:
                         patch_info_origin = json.load(f)
-                        # 在最前面加上图片名
+                        #  
                         patch_info_edited = [wsi_name + i for i in patch_info_origin]       
-                    # 将修改后的patch_info写回文件
+                    #  patch_info 
                     with open(patch_info_path_edited, 'w') as f:
                         json.dump(patch_info_edited, f)
 
@@ -349,7 +349,7 @@ class WSI_Image_Vector_DB_Builder:
 
 
 
-            # 更新 index
+            #   index
             existing_index_files = sorted([f for f in os.listdir(self.cuda_index_dir) if f.startswith(f"{method_type}_index_batch_")])
             existing_index_files = [f.split("_")[-1].split(".")[0] for f in existing_index_files]
             if new_batch_index not in existing_index_files:
@@ -361,7 +361,7 @@ class WSI_Image_Vector_DB_Builder:
             self.save_embeddings_to_file(embeddings, new_batch_index)
             self.save_infos_to_file(batch_infos, new_batch_index)
                 
-            # 释放显存
+            #  
             del embeddings
             cp.get_default_memory_pool().free_all_blocks()
 
@@ -372,7 +372,7 @@ class WSI_Image_Vector_DB_Builder:
 if __name__ == "__main__":
     builder = WSI_Image_Vector_DB_Builder()
     builder.build_all_infos_and_cuda_embeddings()
-    # 每10分钟更新一次
+    #  10 
 
 
     # while True:

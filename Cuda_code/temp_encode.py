@@ -1,4 +1,4 @@
-# 对所有svs文件，进行分割，生成patch
+#  svs patch
 
 from io import BytesIO
 from PIL import Image
@@ -96,7 +96,7 @@ class Embedding_loader():
 
 
     def loading_wsi_image(self, wsi_name, images):
-        """在 CPU 上获取 WSI patch 的 Dataloader。"""
+        """  CPU   WSI patch   Dataloader """
 
 
         wsi_dataset = CustomWSIDataset(images, self.wsi_patch_encoder.transform)
@@ -142,7 +142,7 @@ def get_slide_info(wsi_path):
         return msg
     # metadata['location'] = filepath
     # print(f"Loading {filepath}")
-    # 如果filepath大小小于5MB，则不加载
+    #  filepath 5MB 
     if os.path.getsize(filepath) < 5 * 1024 * 1024:
         msg = {"error": "File size less than 5MB"}
         # print(msg)
@@ -201,7 +201,7 @@ def loading_wsi(wsi_path):
         
     return regions, captions
 
-# 将cache中的wsi_name读取出来，存入wsi_name_list
+#  cache wsi_name wsi_name_list
 # if __name__ == "__main__":
 # wsi_name_list = []
 # wsi_dir = "/hpc2hdd/home/ysi538/retrieval/caches/wsi_image/"
@@ -222,7 +222,7 @@ def get_valid_subfolders(folder_path):
                 for file in files:
                     if file.endswith(('.svs', '.tiff')):
                         file_path = os.path.join(root, file)
-                        if os.path.getsize(file_path) > 50 * 1024 * 1024:  # 文件大小大于50MB
+                        if os.path.getsize(file_path) > 50 * 1024 * 1024:  #  50MB
                             valid_subfolders.append(file_path)  
                             break
                 if len(valid_subfolders) >= 50:
@@ -254,7 +254,7 @@ for wsi_path in tqdm(wsi_name_list, desc = f"Total",ascii=True, ncols=100):
     wsi_name = wsi_path.split("/")[-1]
     # if wsi_name in exist_list:
     #     continue
-    # if wsi_name != "3557_D23-00412-29-30_无淋巴结转移.tiff":
+    # if wsi_name != "3557_D23-00412-29-30_ .tiff":
     #     continue
 
 
@@ -266,7 +266,7 @@ for wsi_path in tqdm(wsi_name_list, desc = f"Total",ascii=True, ncols=100):
     
     # # print("captions[20885]", captions[20885])
     # # regions[20885].show()
-    # # 保存这个region
+    # #  region
     # # regions[20885].save("test.png")
     # wsi_name = wsi_name.split("/")[-1]
     

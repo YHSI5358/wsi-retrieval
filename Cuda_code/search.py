@@ -14,7 +14,7 @@ from datetime import datetime
 from PIL import Image
 from io import BytesIO
 import requests
-# 添加模块路径到sys.path
+#  sys.path
 sys.path.append('/hpc2hdd/home/ysi538/retrieval')
 # sys.path.append(os.path.join(os.path.dirname(__file__), '../../utils'))
 # from encoder import WSI_Image_UNI_Encoder
@@ -63,10 +63,10 @@ class Image2Image_Retriever_Rapid():
         for cupy_batch_file, infos_batch_file in zip_list[begin:end]:
             with open(os.path.join(self.cupy_cache_dir, cupy_batch_file), 'rb') as f:
                 batch_embeddings = cp.load(f)
-                # 将 cupy 数组转换为 numpy 数组
+                #   cupy   numpy  
                 batch_embeddings = cp.asnumpy(batch_embeddings)
                 cupy_embeddings.append(batch_embeddings)
-                # 释放显存
+                #  
                 del batch_embeddings
                 cp.get_default_memory_pool().free_all_blocks()
             with open(os.path.join(self.cupy_infos_dir, infos_batch_file), 'r') as f:
@@ -94,10 +94,10 @@ class Image2Image_Retriever_Rapid():
         total_distances = []
         query_image = self.request_image(query_path)
         query_embedding = self.image_encoder.encode_image(query_image)
-        # 转为numpy
+        #  numpy
         query_embedding = np.array(query_embedding).astype('float32')
 
-        # 确保 query_image 是二维数组
+        #   query_image  
         if query_embedding.ndim == 1:
             query_embedding = query_embedding.reshape(1, -1)
 
@@ -165,38 +165,38 @@ class Image2Image_Retriever_Rapid():
             search_info_list.append(search_info)
 
         def dfs(node, component, visited):
-            # 将当前节点标记为已访问
+            #  
             visited[node] = True
-            # 将当前节点添加到当前组件
+            #  
             component.append(search_info_list[node])
             
-            # 遍历其他所有节点
+            #  
             for neighbor in range(len(search_info_list)):
                 if not visited[neighbor] and self.judge_if_connected(search_info_list[node], search_info_list[neighbor]):
-                    # 如果邻居节点未被访问过且与当前节点相连，则递归地进行DFS
+                    #  DFS
                     dfs(neighbor, component, visited)
 
-        # 初始化变量
+        #  
         visited = [False] * len(search_info_list)
         components = []
 
-        # 对每个节点执行DFS，如果该节点尚未被访问
+        #  DFS 
         for i in range(len(search_info_list)):
             if not visited[i]:
-                # 创建一个新的组件列表
+                #  
                 current_component = []
-                # 执行DFS并填充当前组件
+                #  DFS 
                 dfs(i, current_component, visited)
-                # 将当前组件添加到结果列表
+                #  
                 components.append(current_component)
 
-        # 剔除掉只有一个region的component
+        #  region component
         components = [component for component in components if len(component) > 1]
 
         return components
 
     def judge_if_connected(self, info1, info2):
-        # 判断两个region是否相邻,先判断name是否相同，再判断level是否相同，再判断左上角坐标的xy加上或者减去wh是否与另一个region的xy相同
+        #  region , name level xy wh region xy 
         if info1["name"] != info2["name"]:
             return False
         if info1["level"] != info2["level"]:
@@ -229,7 +229,7 @@ class Image2Image_Retriever_Rapid():
         return query_image
     
     def __del__(self):
-        # 显式释放资源
+        #  
         if hasattr(self, 'index_list'):
             for index in self.index_list:
                 del index
@@ -241,26 +241,26 @@ class Image2Image_Retriever_Rapid():
 image2image_retrieval = None
 
 def get_image2image_retriever():
-    """加载新版图像检索器（大规模）"""
+    """ """
     global image2image_retrieval
     if image2image_retrieval is None:
-        print("==============初始化image2image检索器==============")
+        print("============== image2image ==============")
         begin_time = datetime.now()
         image2image_retrieval = Image2Image_Retriever_Rapid()
         end_time = datetime.now()
-        print("==============image2image检索器初始化成功=============="+"用时：", end_time - begin_time)
+        print("==============image2image =============="+" ", end_time - begin_time)
     return image2image_retrieval
 
 @app.route('/test', methods=['POST'])
 def process_image2image_retrieval():
-    """新版图像检索（大规模）"""
+    """ """
     query_img_path = request.json.get('query_img_path')
     top_k = request.json.get('top_k')
 
     image2image_retriever = get_image2image_retriever()
     distances, neighbors,results = image2image_retriever.search(query_img_path, top_k)
     # print(retrieved_images_payload)
-    # neighbor "47062_EGFR-肺癌-230214010TFXA-0.7-LBP.ibl.tiff_5120_15872_256_256_1.png" 
+    # neighbor "47062_EGFR- -230214010TFXA-0.7-LBP.ibl.tiff_5120_15872_256_256_1.png" 
     # results = [image2image_retriever.all_infos[neighbor] for neighbor in neighbors]
 
 
@@ -273,7 +273,7 @@ def process_image2image_retrieval():
         } for node in results]
 
     return jsonify({  
-        'answer':"以下是 Image2Image Retrieval 的结果。",        # 文字回答为定式
+        'answer':"  Image2Image Retrieval  ",        #  
         'retrieved_images_information':retrieved_images_information
     })
 
@@ -289,8 +289,8 @@ if __name__ == "__main__":
 
     # #%%
     # query_img_path =  " metaservice/api/region/openslide/241183-21.tiff/6400/25344/256/256/1"
-    # # result= "6957_2200910-64_无淋巴结转移.tiff_10496_4864_256_256_1.png"
-    # # result_img_path = f" metaservice/api/region/openslide/2200910-64_无淋巴结转移.tiff/10496/4864/256/256/1"
+    # # result= "6957_2200910-64_ .tiff_10496_4864_256_256_1.png"
+    # # result_img_path = f" metaservice/api/region/openslide/2200910-64_ .tiff/10496/4864/256/256/1"
     # m=1
     # n=1
     # begin = time.time()

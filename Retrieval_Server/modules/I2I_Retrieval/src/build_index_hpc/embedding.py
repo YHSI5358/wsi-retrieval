@@ -87,7 +87,7 @@ class ImagePatchEncoder():
         self.image_names = self.load_wsi_name(self.loaded_wsi_name_path)
 
     def load_wsi_name(self, json_file_path):
-        """读取已经缓存过的 WSI Names。"""
+        """  WSI Names """
         with open(json_file_path, "r") as file:
             try:
                 return json.load(file)

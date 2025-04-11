@@ -2,11 +2,11 @@ import requests
 
 
 # def text2text_retireval_response(query):
-#     # url = "  /rag/text2text_retrieval"  # 对外
-#     url = "http://10.90.156.242:5000/rag/text2text_retrieval"  # 对内
+#     # url = "  /rag/text2text_retrieval"  #  
+#     url = "http://10.90.156.242:5000/rag/text2text_retrieval"  #  
 #     data = {
 #         'origin_query':query,
-#         'llm':'llama3'      # 可替换：“mistral”，“llama3”， “gpt4o”
+#         'llm':'llama3'      #  “mistral” “llama3”  “gpt4o”
 #         }
 #     response = requests.post(url, json=data)
 
@@ -36,7 +36,7 @@ import requests
 #     return answer, wsi_level, metadata_position, patch_size, source_wsi_name
 
 def image2image_retireval_response(query):
-    "新版图像检索（大规模）"
+    " "
     # url = 
     data = {
         'query_img_path':query,

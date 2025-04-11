@@ -23,7 +23,7 @@ text2image_retrieval = None
 def get_database():
     global database
     if database is None:
-        print("==============初始化数据库==============")
+        print("============== ==============")
         struc_file = "Retrieval_Server/data/struc.sql"
         data_file = "Retrieval_Server/data/data.sql"
         try:
@@ -31,60 +31,60 @@ def get_database():
             database = Initial_Database(struc_file, data_file)
             end_time = datetime.now()
             # database = None
-            print("==============数据库初始化成功=============="+"用时：", end_time - begin_time)
+            print("============== =============="+" ", end_time - begin_time)
         except:
-            print("==============数据库初始化失败==============")
+            print("============== ==============")
             database = None
     return database
 
 def get_text2text_retriever(database):
     global text2text_retriever
     if text2text_retriever is None:
-        print("==============初始化text2text检索器==============")
+        print("============== text2text ==============")
         begin_time = datetime.now()
         text2text_retriever = Text2Text_Retriever_Builder(database=None)
         end_time = datetime.now()
-        print("==============text2text检索器初始化成功=============="+"用时：", end_time - begin_time)
+        print("==============text2text =============="+" ", end_time - begin_time)
         
     return text2text_retriever
 
 def get_text2sql_retriever(database, llm="gpt4o"):
     global text2sql_retriever
     if text2sql_retriever is None:
-        print("==============初始化text2sql检索器==============")
+        print("============== text2sql ==============")
         begin_time = datetime.now()
         text2sql_retriever = Text2Sql_Retriever(database, llm=llm)
         end_time = datetime.now()
-        print("==============text2sql检索器初始化成功=============="+"用时：", end_time - begin_time)
+        print("==============text2sql =============="+" ", end_time - begin_time)
     return text2sql_retriever
 
 # def get_image2image_retriever(database):
-#     """加载旧版图像检索器"""
+#     """ """
 #     global image2image_retrieval
 #     if image2image_retrieval is None:
 #         image2image_retrieval = Image2Image_Retriever(database)
 #     return image2image_retrieval
 
 def get_image2image_retriever():
-    """加载新版图像检索器（大规模）"""
+    """ """
     global image2image_retrieval
     if image2image_retrieval is None:
-        print("==============初始化image2image检索器==============")
+        print("============== image2image ==============")
         begin_time = datetime.now()
         image2image_retrieval = Image2Image_Retriever_Rapid()
         end_time = datetime.now()
-        print("==============image2image检索器初始化成功=============="+"用时：", end_time - begin_time)
+        print("==============image2image =============="+" ", end_time - begin_time)
     return image2image_retrieval
 
 def validate_datetime(value):
     if isinstance(value, datetime):
         try:
-            # 确保日期时间值在有效范围内
+            #  
             value = value.astimezone(timezone.utc)
             # value = None
 
         except OverflowError:
-            # 如果日期时间值无效，设置为 None 或其他默认值
+            #   None  
             value = None
     return value
 
@@ -114,15 +114,15 @@ def process_text2text_retrieval():
     data_table = answer['data_table']
 
     result = {
-            'answer': '以下是 Text2Text Retrieval 的结果。',
+            'answer': '  Text2Text Retrieval  ',
             'data_table': data_table,
             'metadata': metadata
         }
     
-    print("生成完成")
+    print(" ")
     print("result",result)
 
-    # 遍历并验证所有日期时间值
+    #  
     try:
         for key, value in result['metadata'].items():
             print("key",key)
@@ -139,14 +139,14 @@ def process_text2text_retrieval():
 
 @app.route('/query/image2image_retrieval', methods=['POST'])
 def process_image2image_retrieval():
-    """新版图像检索（大规模）"""
+    """ """
     query_img_path = request.json.get('query_img_path')
     top_k = request.json.get('top_k')
 
     image2image_retriever = get_image2image_retriever()
     distances, neighbors,results = image2image_retriever.search(query_img_path, top_k)
     # print(retrieved_images_payload)
-    # neighbor "47062_EGFR-肺癌-230214010TFXA-0.7-LBP.ibl.tiff_5120_15872_256_256_1.png" 
+    # neighbor "47062_EGFR- -230214010TFXA-0.7-LBP.ibl.tiff_5120_15872_256_256_1.png" 
     # results = [image2image_retriever.all_infos[neighbor] for neighbor in neighbors]
 
 
@@ -159,7 +159,7 @@ def process_image2image_retrieval():
         } for node in results]
 
     return jsonify({  
-        'answer':"以下是 Image2Image Retrieval 的结果。",        # 文字回答为定式
+        'answer':"  Image2Image Retrieval  ",        #  
         'retrieved_images_information':retrieved_images_information
     })
 
@@ -215,5 +215,5 @@ if __name__ == '__main__':
     
     app.run(debug=True, host='0.0.0.0', port="9998", use_reloader=False)
     end_time = datetime.now()
-    print("本次服务运行时长:", end_time - begin_time)
+    print(" :", end_time - begin_time)
     

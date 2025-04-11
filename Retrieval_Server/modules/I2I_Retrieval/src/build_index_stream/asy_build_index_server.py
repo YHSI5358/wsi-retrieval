@@ -174,8 +174,8 @@ class WSI_Image_Encoder_server():
     
         row_image_and_infos = await self.image_downloader.download_images(wsi_row_url_infos)
 
-        wsi_row_infos = []      # 当前 row image 的 infos（）
-        wsi_embeddings = []     # 当前 row image 的 embeddings
+        wsi_row_infos = []      #   row image   infos 
+        wsi_embeddings = []     #   row image   embeddings
         for row_image_and_info in tqdm(row_image_and_infos):
 
             if row_image_and_info is None:
@@ -184,8 +184,8 @@ class WSI_Image_Encoder_server():
             row_image, row_infos = row_image_image_and_info                                                       
             patch_width = int(row_infos['width'])
 
-            patch_img_list = self.parallel_cropper(row_image, patch_width, slice_size)          # 并行处理 row image to patch
-            embeddings = self.image_embed_model._get_image_list_embeddings(patch_img_list)           # 批量 UNI 编码
+            patch_img_list = self.parallel_cropper(row_image, patch_width, slice_size)          #   row image to patch
+            embeddings = self.image_embed_model._get_image_list_embeddings(patch_img_list)           #   UNI  
             wsi_embeddings.append(embeddings)
             wsi_row_infos.append(row_infos)
 
