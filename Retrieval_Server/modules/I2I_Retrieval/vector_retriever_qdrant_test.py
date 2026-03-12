@@ -22,7 +22,7 @@ class Image2Image_Retriever_Qdrant():
         print("Number of vectors:", nums)
 
     def retrieve(self, query_img_url, top_k=20):
-        query_embedding = [0.1 for _ in range(1024)]    # 测试 query embedding
+        query_embedding = [0.1 for _ in range(1024)]    #   query embedding
 
         retrieval_results = self.image_client.search(
             collection_name=self.image_client_name,

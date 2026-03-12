@@ -14,10 +14,10 @@ def main():
     x = np.arange(n).astype(np.int32)
     y = 2 * x
 
-    # 拷贝数据到设备端
+    #  
     x_device = cuda.to_device(x)
     y_device = cuda.to_device(y)
-    # 在显卡设备上初始化一块用于存放GPU计算结果的空间
+    #  GPU 
     gpu_result = cuda.device_array(n)
     cpu_result = np.empty(n)
 

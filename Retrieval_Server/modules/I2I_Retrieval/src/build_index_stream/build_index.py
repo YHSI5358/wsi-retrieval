@@ -86,7 +86,7 @@
 #             width = int(slide_info[f"openslide.level[{level}].width"])
 #             height = int(slide_info[f"openslide.level[{level}].height"])
 
-#             if width > 32768 or height > 32768:       # 暂时的限制条件 
+#             if width > 32768 or height > 32768:       #   
 #                 continue
 
 #             urls = []

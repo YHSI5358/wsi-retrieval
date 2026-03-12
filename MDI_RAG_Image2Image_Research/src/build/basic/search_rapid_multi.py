@@ -14,7 +14,7 @@ from datetime import datetime
 from PIL import Image
 from io import BytesIO
 import requests
-# 添加模块路径到sys.path
+#  sys.path
 sys.path.append('/hpc2hdd/home/ysi538/retrieval')
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../utils'))
 from encoder import WSI_Image_UNI_Encoder
@@ -98,7 +98,7 @@ class Image2Image_Retriever_Rapid():
         if query_embedding.ndim == 1:
             query_embedding = query_embedding.reshape(1, -1)
 
-        # 将 query_embedding 转换为 NumPy 数组
+        #   query_embedding   NumPy  
         query_embedding = cp.asnumpy(query_embedding)
 
 
@@ -156,38 +156,38 @@ class Image2Image_Retriever_Rapid():
             search_info_list.append(search_info)
 
         def dfs(node, component, visited):
-            # 将当前节点标记为已访问
+            #  
             visited[node] = True
-            # 将当前节点添加到当前组件
+            #  
             component.append(search_info_list[node])
             
-            # 遍历其他所有节点
+            #  
             for neighbor in range(len(search_info_list)):
                 if not visited[neighbor] and self.judge_if_connected(search_info_list[node], search_info_list[neighbor]):
-                    # 如果邻居节点未被访问过且与当前节点相连，则递归地进行DFS
+                    #  DFS
                     dfs(neighbor, component, visited)
 
-        # 初始化变量
+        #  
         visited = [False] * len(search_info_list)
         components = []
 
-        # 对每个节点执行DFS，如果该节点尚未被访问
+        #  DFS 
         for i in range(len(search_info_list)):
             if not visited[i]:
-                # 创建一个新的组件列表
+                #  
                 current_component = []
-                # 执行DFS并填充当前组件
+                #  DFS 
                 dfs(i, current_component, visited)
-                # 将当前组件添加到结果列表
+                #  
                 components.append(current_component)
 
-        # 剔除掉只有一个region的component
+        #  region component
         components = [component for component in components if len(component) > 1]
 
         return components
 
     def judge_if_connected(self, info1, info2):
-        # 判断两个region是否相邻,先判断name是否相同，再判断level是否相同，再判断左上角坐标的xy加上或者减去wh是否与另一个region的xy相同
+        #  region , name level xy wh region xy 
         if info1["name"] != info2["name"]:
             return False
         if info1["level"] != info2["level"]:

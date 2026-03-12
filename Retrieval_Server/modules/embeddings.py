@@ -239,7 +239,7 @@ class Custom_Llama3_Text_Embedding(BaseEmbedding):
         payload = json.dumps({
         "model": "meta-llama/Meta-Llama-3-8B-Instruct",
         "messages": texts,
-        "max_length": "4096" # 单条字符串截断长度，最大可为8192
+        "max_length": "4096" #  8192
         })
         headers = {
         'Content-Type': 'application/json'
@@ -590,9 +590,9 @@ if __name__ == "__main__":
     # custom_embed_model = Custom_MPNet_Text_Embedding(max_length=512)
     custom_embed_model = Custom_Llama3_Text_Embedding()
 
-    text_embedding = custom_embed_model.get_text_embedding("胃炎？")
+    text_embedding = custom_embed_model.get_text_embedding(" ")
     print(type(text_embedding), len(text_embedding))
-    query_embedding = custom_embed_model.get_query_embedding("普济内分泌科")
+    query_embedding = custom_embed_model.get_query_embedding(" ")
     print(type(query_embedding), len(query_embedding))
 
     print(np.dot(text_embedding, query_embedding))

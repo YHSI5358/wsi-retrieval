@@ -19,7 +19,7 @@ class ImagePatchDownloader:
         self.image_names = self.load_wsi_name(self.loaded_wsi_name_path)
     
     def load_wsi_name(self, json_file_path):
-        """读取已经缓存过的 WSI 的 Names。"""
+        """  WSI   Names """
         if not os.path.exists(json_file_path):
             with open(json_file_path, "w") as file:
                 json.dump([], file)
@@ -32,7 +32,7 @@ class ImagePatchDownloader:
                 return []
 
     def check_image_name(self, wsi_name):
-        """将新加载的 WSI name 加入到 loaded WSI 中。"""
+        """  WSI name   loaded WSI  """
         json_file_path = "MDI_RAG_Image2Image_Research/data/wsi_patch_image/loaded_wsis.json"
         image_names = self.load_wsi_name(json_file_path)
         if wsi_name not in image_names:
@@ -44,7 +44,7 @@ class ImagePatchDownloader:
             return True
 
     def loading_wsi(self, wsi_name):
-        """按照 Name of WSI 来加载和保存 patch 图像。"""
+        """  Name of WSI   patch  """
         if wsi_name in self.image_names:
             print(f"Patch of WSI {wsi_name} in the Cache.")
             return
@@ -93,10 +93,10 @@ class ImagePatchDownloader:
             json.dump(self.image_names, file, indent=4)
 
     async def download_images(self, wsi_name, patch_infos):
-        """按照 list of patch info 请求并行异步发起多张图像的请求。"""
+        """  list of patch info  """
         semaphore = asyncio.Semaphore(self.max_concurrent_downloads)
         async with semaphore:   
-            # timeout = aiohttp.ClientTimeout(total=60)  # 设置总超时时间为 60 秒
+            # timeout = aiohttp.ClientTimeout(total=60)  #   60  
             async with aiohttp.ClientSession() as session:
                 tasks = [self.asy_download_image(session, wsi_name, patch_info) for patch_info in patch_infos]
                 with tqdm(total=len(tasks), ascii=True) as pbar:
@@ -108,7 +108,7 @@ class ImagePatchDownloader:
 
 
     async def asy_download_image(self, session, wsi_name, patch_info): 
-        """按照 patch info 进行单张图像的请求并保存。"""
+        """  patch info  """
         try:
             patch_url = os.path.join(self.url_head, wsi_name, ("/").join([patch_info[key] for key in patch_info]))
             async with session.get(patch_url) as response:

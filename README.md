@@ -55,7 +55,6 @@ Request body:
 {
   "query_img_path": "path/to/image.jpg",
   "top_k": 20,
-  "include_metadata": true
 }
 ```
 
@@ -70,7 +69,6 @@ Request body:
 {
   "query_img_paths": ["path/to/image1.jpg", "path/to/image2.jpg"],
   "top_k": 20,
-  "combine_results": true
 }
 ```
 

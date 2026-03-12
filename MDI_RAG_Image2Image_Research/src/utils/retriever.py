@@ -48,7 +48,7 @@ class Image2Image_Retriever_Qdrant():
     
     def get_combined_regions(self, retrieval_results):
 
-        # 18632_L02_CD4.svs_0_0_256_256_1.png格式18632_L02_CD4.svs_14336_1536_256_256_1.png
+        # 18632_L02_CD4.svs_0_0_256_256_1.png 18632_L02_CD4.svs_14336_1536_256_256_1.png
         search_info_list = []
         
         for result in retrieval_results:

@@ -36,7 +36,7 @@ class WSI_Image_Vector_DB_Builder():
         url = "http://10.120.20.169:32407/wsi_image_embeddings"
         data = {'wsi_name':wsi_name,}
         
-        timeout = aiohttp.ClientTimeout(total=3600)  # 设置总超时时间为60秒
+        timeout = aiohttp.ClientTimeout(total=3600)  #  60 
         async with session.post(url, json=data, timeout=timeout) as response:
             response_json = await response.json()
             patch_infos = response_json['patch_infos']

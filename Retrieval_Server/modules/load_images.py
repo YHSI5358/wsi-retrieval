@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # svs_image.save("Retrieval_Server/caches/"+svs_file.split("/")[-1].split(".")[0]+".png")
 
     # tiff_file = '/home/mdi/suri/MDI_RAG_project/Retrieval_Server/data/images/IBL014-7-14.ibl.tiff'
-    # # target_size = (256, 256)  # 指定目标尺寸
+    # # target_size = (256, 256)  #  
     # related_pathes, positions = load_svsortiff_image(tiff_file)
     # for path in related_pathes:
     #     print(path)
